@@ -96,7 +96,7 @@ def scrape_diesel_prices():
     return data
 
 
-def save_to_json(data, filename="diesel_prices.json"):
+def save_to_json(data, filename="fuel_prices.json"):
     """
     Overwrite any existing file with the new diesel data in JSON format.
     """
