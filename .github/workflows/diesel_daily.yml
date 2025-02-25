@@ -1,0 +1,33 @@
+name: Update Diesel Data Daily
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every day at midnight UTC
+  workflow_dispatch:     # Allows manual run from GitHub Actions
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests beautifulsoup4
+      - name: Run scraper
+        run: python scraper.py
+
+      - name: Commit and push updated JSON
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add diesel_prices.json
+          git commit -m "Auto-update diesel prices" || echo "No changes to commit"
+          git push
