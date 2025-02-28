@@ -2,9 +2,12 @@ name: Update Diesel Data Daily
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Runs every day at midnight UTC
-  workflow_dispatch:     # Allows manual run from GitHub Actions
+    - cron: "0 1 * * 2"  # Runs every Monday at 8 PM EST (1 AM UTC Tuesday)
+  workflow_dispatch:     # Allows manual triggering
 
+permissions:
+  contents: write       # Allows push permissions
+  
 jobs:
   update-json:
     runs-on: ubuntu-latest
@@ -26,8 +29,8 @@ jobs:
 
       - name: Commit and push updated JSON
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add diesel_prices.json
-          git commit -m "Auto-update diesel prices" || echo "No changes to commit"
-          git push
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "Automated update of diesel prices" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/ryan3plhub/us-fuel-prices.git main
