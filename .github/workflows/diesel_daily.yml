@@ -1,22 +1,25 @@
-name: Update Diesel Data Daily
+name: Update Fuel Data Weekly
 
 on:
   schedule:
-    - cron: "0 1 * * 2"  # Runs every Monday at 8 PM EST (1 AM UTC Tuesday)
-  workflow_dispatch:     # Allows manual triggering
+    # Tuesday 23:00 UTC = Tuesday 7 PM EDT / 6 PM EST.
+    # Safely after EIA's Monday 5 PM ET publish AND after a
+    # holiday-shifted Tuesday 5 PM ET publish (e.g., Memorial Day).
+    - cron: "0 23 * * 2"
+  workflow_dispatch:
 
 permissions:
-  contents: write       # Allows push permissions
-  
+  contents: write
+
 jobs:
   update-json:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
@@ -24,13 +27,18 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install requests beautifulsoup4
+
       - name: Run scraper
         run: python scraper.py
 
-      - name: Commit and push updated JSON
+      - name: Commit and push updated JSON (if anything changed)
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add .
-          git commit -m "Automated update of diesel prices" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/ryan3plhub/us-fuel-prices.git main
+          git add diesel_prices.json gasoline_prices.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update fuel prices"
+            git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/ryan3plhub/us-fuel-prices.git main
+          fi
