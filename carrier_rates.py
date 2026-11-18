@@ -165,7 +165,7 @@ def fetch_pages():
             for carrier, url in SOURCES.items():
                 page = browser.new_page(locale='en-US')
                 downloads = []
-                page.on('download', downloads.append)
+                page.on('download', lambda download: downloads.append(download))
                 try:
                     print(f'Checking {carrier}: {url}', flush=True)
                     response = page.goto(url, wait_until='domcontentloaded', timeout=60000)
