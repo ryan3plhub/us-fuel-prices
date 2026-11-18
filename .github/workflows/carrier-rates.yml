@@ -13,15 +13,16 @@ jobs:
   update:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    env:
+      CARRIER_CHROME_CHANNEL: chrome
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install parser and browser
+      - name: Install parser (use runner Chrome)
         run: |
           python -m pip install beautifulsoup4==4.14.2 playwright==1.56.0 tzdata==2025.2
-          python -m playwright install --with-deps chromium
       - name: Verify parser fixtures
         run: python -m unittest test_carrier_rates.py -v
       - name: Read official published rates
