@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-18T13:59:39.723899+00:00",
+  "timezone": "America/New_York",
+  "test_data": false,
+  "carriers": {
+    "ups": {
+      "service": "UPS Domestic Ground",
+      "source_url": "https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges",
+      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "records": [],
+      "verified_at": null,
+      "status": "check_failed",
+      "error": "Error: carrier source unavailable"
+    },
+    "fedex": {
+      "service": "FedEx Ground / Home Delivery",
+      "source_url": "https://www.fedex.com/en-us/shipping/fuel-surcharge.html",
+      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "records": [],
+      "verified_at": null,
+      "status": "check_failed",
+      "error": "TimeoutError: carrier source unavailable"
+    },
+    "ontrac": {
+      "service": "OnTrac national diesel-based schedule",
+      "source_url": "https://www.ontrac.com/surchargesandrates/",
+      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "records": [
+        {
+          "effective_from": "2026-08-17",
+          "effective_through": "2026-08-23",
+          "amount": 23.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-08-24",
+          "effective_through": "2026-08-30",
+          "amount": 24.5,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-08-31",
+          "effective_through": "2026-09-06",
+          "amount": 25.0,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-09-07",
+          "effective_through": "2026-09-13",
+          "amount": 24.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-09-14",
+          "effective_through": "2026-09-20",
+          "amount": 25.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-09-21",
+          "effective_through": "2026-09-27",
+          "amount": 26.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-09-28",
+          "effective_through": "2026-10-04",
+          "amount": 27.5,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-10-05",
+          "effective_through": "2026-10-11",
+          "amount": 27.0,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-10-12",
+          "effective_through": "2026-10-18",
+          "amount": 26.5,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-10-19",
+          "effective_through": "2026-10-25",
+          "amount": 26.5,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-10-26",
+          "effective_through": "2026-11-01",
+          "amount": 26.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-11-02",
+          "effective_through": "2026-11-08",
+          "amount": 27.0,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-11-09",
+          "effective_through": "2026-11-15",
+          "amount": 26.75,
+          "unit": "percent"
+        },
+        {
+          "effective_from": "2026-11-16",
+          "effective_through": "2026-11-22",
+          "amount": 26.25,
+          "unit": "percent"
+        }
+      ],
+      "verified_at": "2026-11-18T13:59:39.723899+00:00",
+      "source_sha256": "36baeb0d457d46f85ea2a90fe5e07bf9c813cad2202e1c79e0806301234d3c11",
+      "warnings": [
+        "Conflicting published period or amount starting 2026-11-23; excluded"
+      ],
+      "status": "verified"
+    },
+    "dhl": {
+      "service": "DHL eCommerce domestic",
+      "source_url": "https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html",
+      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "records": [],
+      "verified_at": null,
+      "status": "check_failed",
+      "error": "Error: carrier source unavailable"
+    },
+    "usps": {
+      "service": "USPS specified domestic competitive products",
+      "source_url": "https://about.usps.com/newsroom/national-releases/2026/0325-usps-announces-transportation-related-time-limited-price-change.htm",
+      "status": "reviewed_policy",
+      "reviewed_on": "2026-11-18",
+      "records": [
+        {
+          "effective_from": "2026-04-26",
+          "effective_through": "2027-01-16",
+          "amount": 8,
+          "unit": "percent_base_price_adjustment"
+        }
+      ],
+      "note": "Already incorporated in affected base postage prices; do not add again. Proposed January 17 changes require review before activation."
+    }
+  }
+}
