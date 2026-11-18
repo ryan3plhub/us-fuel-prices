@@ -1,31 +1,31 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T13:59:39.723899+00:00",
+  "generated_at": "2026-11-18T14:02:32.956320+00:00",
   "timezone": "America/New_York",
   "test_data": false,
   "carriers": {
     "ups": {
       "service": "UPS Domestic Ground",
       "source_url": "https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges",
-      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "last_attempt_at": "2026-11-18T14:02:32.956320+00:00",
       "records": [],
       "verified_at": null,
       "status": "check_failed",
-      "error": "Error: carrier source unavailable"
+      "error": "Error: Page.goto: Download is starting"
     },
     "fedex": {
       "service": "FedEx Ground / Home Delivery",
       "source_url": "https://www.fedex.com/en-us/shipping/fuel-surcharge.html",
-      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "last_attempt_at": "2026-11-18T14:02:32.956320+00:00",
       "records": [],
       "verified_at": null,
       "status": "check_failed",
-      "error": "TimeoutError: carrier source unavailable"
+      "error": "TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
     },
     "ontrac": {
       "service": "OnTrac national diesel-based schedule",
       "source_url": "https://www.ontrac.com/surchargesandrates/",
-      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "last_attempt_at": "2026-11-18T14:02:32.956320+00:00",
       "records": [
         {
           "effective_from": "2026-08-17",
@@ -112,8 +112,8 @@
           "unit": "percent"
         }
       ],
-      "verified_at": "2026-11-18T13:59:39.723899+00:00",
-      "source_sha256": "36baeb0d457d46f85ea2a90fe5e07bf9c813cad2202e1c79e0806301234d3c11",
+      "verified_at": "2026-11-18T14:02:32.956320+00:00",
+      "source_sha256": "e77a0ac2d8329ad617c38920c92ac854318fe5a5453e70ac1c53fba54ce3ccb6",
       "warnings": [
         "Conflicting published period or amount starting 2026-11-23; excluded"
       ],
@@ -122,11 +122,11 @@
     "dhl": {
       "service": "DHL eCommerce domestic",
       "source_url": "https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html",
-      "last_attempt_at": "2026-11-18T13:59:39.723899+00:00",
+      "last_attempt_at": "2026-11-18T14:02:32.956320+00:00",
       "records": [],
       "verified_at": null,
       "status": "check_failed",
-      "error": "Error: carrier source unavailable"
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html"
     },
     "usps": {
       "service": "USPS specified domestic competitive products",
