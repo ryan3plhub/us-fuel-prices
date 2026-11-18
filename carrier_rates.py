@@ -115,12 +115,13 @@ def select_rate(records, today):
     return matches[0] if matches else None
 
 
-def assemble(pages, now, previous=None, fixture=False):
+def assemble(pages, now, previous=None, fixture=False, reviewed=None):
     today = now.astimezone(ZoneInfo('America/New_York')).date()
     result = {'schema_version': 1, 'generated_at': now.isoformat(),
               'timezone': 'America/New_York', 'test_data': fixture, 'carriers': {}}
     problems = []
     previous = previous or {}
+    reviewed = reviewed or {}
     for carrier, url in SOURCES.items():
         entry = {'service': SERVICES[carrier], 'source_url': url, 'last_attempt_at': now.isoformat()}
         try:
@@ -139,6 +140,16 @@ def assemble(pages, now, previous=None, fixture=False):
             entry.update(records=old.get('records', []), verified_at=old.get('verified_at'),
                          status='check_failed', error=str(error)[:250])
             problems.append(f'{carrier}: {error}')
+            manual = reviewed.get(carrier, {})
+            current_manual = select_rate(manual.get('records', []), today)
+            if current_manual and manual.get('source_url') == url:
+                checked = datetime.fromisoformat(manual['verified_at'])
+                age = (now - checked).total_seconds()
+                span = (date.fromisoformat(current_manual['effective_through']) - date.fromisoformat(current_manual['effective_from'])).days
+                if 0 <= age <= 31 * 86400 and 0 <= span <= 30:
+                    entry.update(records=manual['records'], verified_at=manual['verified_at'],
+                                 status='reviewed_fallback', verification_method='browser_review',
+                                 note='Official table checked in browser; automatic source check unavailable. Expires at the published period end.')
         result['carriers'][carrier] = entry
     # USPS is a dated policy, not an EIA-derived rate. Never auto-promote a proposal.
     result['carriers']['usps'] = {
@@ -203,6 +214,7 @@ def main():
     parser.add_argument('--fixtures', type=Path)
     parser.add_argument('--at', help='ISO timestamp; only allowed with --fixtures')
     parser.add_argument('--output', type=Path, default=Path('carrier_rates.json'))
+    parser.add_argument('--reviewed', type=Path, default=Path('reviewed_carrier_rates.json'))
     args = parser.parse_args()
     if args.at and not args.fixtures:
         parser.error('--at is only for offline tests')
@@ -211,7 +223,8 @@ def main():
         parser.error('Timestamp must include timezone')
     pages = {c: (args.fixtures / f'{c}.html').read_text(encoding='utf-8') for c in SOURCES} if args.fixtures else fetch_pages()
     previous = json.loads(args.output.read_text()) if args.output.exists() else {}
-    result, problems = assemble(pages, now, previous, bool(args.fixtures))
+    reviewed = json.loads(args.reviewed.read_text(encoding='utf-8')) if args.reviewed.exists() else {}
+    result, problems = assemble(pages, now, previous, bool(args.fixtures), reviewed)
     temporary = args.output.with_suffix('.tmp')
     temporary.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     temporary.replace(args.output)

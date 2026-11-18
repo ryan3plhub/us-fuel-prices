@@ -14,9 +14,10 @@
     var entry = feed.carriers && feed.carriers[carrier];
     if (!entry || !Array.isArray(entry.records)) return null;
     if (carrier !== 'usps') {
-      if (['verified', 'check_failed'].indexOf(entry.status) === -1) return null;
+      if (['verified', 'check_failed', 'reviewed_fallback'].indexOf(entry.status) === -1) return null;
       var age = now.getTime() - Date.parse(entry.verified_at);
-      if (!Number.isFinite(age) || age < -300000 || age > 72 * 60 * 60 * 1000) return null;
+      var maxAge = entry.status === 'reviewed_fallback' ? 31 * 86400000 : 72 * 60 * 60 * 1000;
+      if (!Number.isFinite(age) || age < -300000 || age > maxAge) return null;
     } else if (entry.status !== 'reviewed_policy') return null;
     var day = localDate(now);
     var matches = entry.records.filter(function (r) {
@@ -29,7 +30,8 @@
     return { amount: rate.amount, unit: rate.unit, effective_from: rate.effective_from,
       effective_through: rate.effective_through, source_url: entry.source_url,
       verified_at: entry.verified_at || entry.reviewed_on,
-      check_failed: entry.status === 'check_failed' };
+      check_failed: entry.status === 'check_failed' || entry.status === 'reviewed_fallback',
+      reviewed_fallback: entry.status === 'reviewed_fallback' };
   }
   var api = {select: select, localDate: localDate};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

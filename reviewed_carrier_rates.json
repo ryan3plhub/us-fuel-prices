@@ -1,0 +1,42 @@
+{
+  "ups": {
+    "source_url": "https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges",
+    "verified_at": "2026-11-18T14:02:52+00:00",
+    "verification_method": "browser_review",
+    "records": [
+      {
+        "effective_from": "2026-11-16",
+        "effective_through": "2026-11-22",
+        "amount": 30.0,
+        "unit": "percent"
+      }
+    ]
+  },
+  "fedex": {
+    "source_url": "https://www.fedex.com/en-us/shipping/fuel-surcharge.html",
+    "verified_at": "2026-11-18T14:02:52+00:00",
+    "verification_method": "browser_review",
+    "records": [
+      {
+        "effective_from": "2026-11-16",
+        "effective_through": "2026-11-22",
+        "amount": 30.0,
+        "unit": "percent"
+      }
+    ]
+  },
+  "dhl": {
+    "source_url": "https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html",
+    "verified_at": "2026-11-18T14:02:52+00:00",
+    "verification_method": "browser_review",
+    "records": [
+      {
+        "effective_from": "2026-11-01",
+        "effective_through": "2026-11-30",
+        "amount": 0.32,
+        "unit": "usd_per_lb",
+        "minimum_chargeable_lb": 1
+      }
+    ]
+  }
+}

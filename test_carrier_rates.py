@@ -65,6 +65,18 @@ class PublishedRateTests(unittest.TestCase):
         self.assertIsNone(select_rate(result['carriers']['usps']['records'], january.date()))
         self.assertTrue(any('USPS' in p for p in problems))
 
+    def test_reviewed_fallback_is_dated_and_does_not_hide_check_failure(self):
+        pages=copy.copy(self.pages)
+        pages['ups']=RuntimeError('source unavailable')
+        reviewed={'ups':{'source_url':'https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges',
+                         'verified_at':self.now.isoformat(), 'records':[{'effective_from':'2026-11-16','effective_through':'2026-11-22','amount':30,'unit':'percent'}]}}
+        result, problems=assemble(pages,self.now,reviewed=reviewed)
+        self.assertEqual(result['carriers']['ups']['status'],'reviewed_fallback')
+        self.assertEqual(select_rate(result['carriers']['ups']['records'],self.now.date())['amount'],30)
+        self.assertTrue(any('ups:' in p for p in problems))
+        expired,_=assemble(pages,datetime(2026,11,23,12,tzinfo=timezone.utc),reviewed=reviewed)
+        self.assertEqual(expired['carriers']['ups']['status'],'check_failed')
+
 
 if __name__ == '__main__':
     unittest.main()
