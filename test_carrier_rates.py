@@ -73,7 +73,8 @@ class PublishedRateTests(unittest.TestCase):
         result, problems=assemble(pages,self.now,reviewed=reviewed)
         self.assertEqual(result['carriers']['ups']['status'],'reviewed_fallback')
         self.assertEqual(select_rate(result['carriers']['ups']['records'],self.now.date())['amount'],30)
-        self.assertTrue(any('ups:' in p for p in problems))
+        self.assertFalse(any('ups:' in p for p in problems))
+        self.assertTrue(result['carriers']['ups']['warnings'])
         expired,_=assemble(pages,datetime(2026,11,23,12,tzinfo=timezone.utc),reviewed=reviewed)
         self.assertEqual(expired['carriers']['ups']['status'],'check_failed')
 

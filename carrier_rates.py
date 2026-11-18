@@ -134,12 +134,12 @@ def assemble(pages, now, previous=None, fixture=False, reviewed=None):
             entry['status'] = 'verified' if select_rate(records, today) else 'unavailable'
             if entry['status'] != 'verified':
                 problems.append(f'{carrier}: no published rate covering {today}')
-            problems.extend(f'{carrier}: {w}' for w in warnings)
         except Exception as error:
             old = previous.get('carriers', {}).get(carrier, {})
             entry.update(records=old.get('records', []), verified_at=old.get('verified_at'),
                          status='check_failed', error=str(error)[:250])
-            problems.append(f'{carrier}: {error}')
+            problem=f'{carrier}: {error}'
+            problems.append(problem)
             manual = reviewed.get(carrier, {})
             current_manual = select_rate(manual.get('records', []), today)
             if current_manual and manual.get('source_url') == url:
@@ -149,7 +149,9 @@ def assemble(pages, now, previous=None, fixture=False, reviewed=None):
                 if 0 <= age <= 31 * 86400 and 0 <= span <= 30:
                     entry.update(records=manual['records'], verified_at=manual['verified_at'],
                                  status='reviewed_fallback', verification_method='browser_review',
+                                 warnings=['Automatic source check unavailable; using dated browser-reviewed record.'],
                                  note='Official table checked in browser; automatic source check unavailable. Expires at the published period end.')
+                    problems.remove(problem)
         result['carriers'][carrier] = entry
     # USPS is a dated policy, not an EIA-derived rate. Never auto-promote a proposal.
     result['carriers']['usps'] = {
@@ -230,6 +232,9 @@ def main():
     temporary.replace(args.output)
     for problem in problems:
         print('::error::' + problem.replace('\n', ' '))
+    for carrier, entry in result['carriers'].items():
+        for warning in entry.get('warnings', []):
+            print('::warning::' + carrier + ': ' + warning.replace('\n', ' '))
     return 1 if problems else 0
 
 
