@@ -170,7 +170,8 @@ def fetch_pages():
                     page.wait_for_function("() => Array.from(document.querySelectorAll('table')).some(t => /20[0-9]{2}/.test(t.innerText) && /%|per pound/i.test(t.innerText))", timeout=30000)
                     pages[carrier] = page.content()
                 except Exception as error:
-                    pages[carrier] = RuntimeError(type(error).__name__ + ': carrier source unavailable')
+                    detail = str(error).split('Call log:')[0].strip()[:400]
+                    pages[carrier] = RuntimeError(type(error).__name__ + ': ' + detail)
                 finally:
                     page.close()
         finally:
