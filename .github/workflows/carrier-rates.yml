@@ -1,0 +1,55 @@
+name: Verify published carrier fuel rates
+on:
+  schedule:
+    # Twice daily; catches Monday changes and monthly DHL changes without waiting for EIA.
+    - cron: '23 12,23 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: carrier-rate-update
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Reuse existing repository credential; do not create a new credential.
+          token: ${{ secrets.PAT_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install parser and browser
+        run: |
+          python -m pip install beautifulsoup4==4.14.2 playwright==1.56.0 tzdata==2025.2
+          python -m playwright install --with-deps chromium
+      - name: Verify parser fixtures
+        run: python -m unittest test_carrier_rates.py -v
+      - name: Read official published rates
+        id: scrape
+        continue-on-error: true
+        run: python carrier_rates.py
+      - name: Publish successful checks and failure status
+        run: |
+          test -f carrier_rates.json
+          git config user.name 'GitHub Actions'
+          git config user.email 'github-actions@github.com'
+          git add carrier_rates.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update verified carrier fuel schedules'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Keep diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: carrier-rate-check
+          path: carrier_rates.json
+      - name: Flag failed checks for workflow notifications
+        if: steps.scrape.outcome == 'failure'
+        run: |
+          echo 'A carrier source failed or published conflicting data. Check the run log; rates were not guessed.'
+          exit 1
