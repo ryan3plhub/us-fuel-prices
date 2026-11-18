@@ -7,6 +7,7 @@ Output includes explicit validity windows and per-carrier failure status.
 import argparse
 import hashlib
 import json
+import os
 import re
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -156,7 +157,7 @@ def fetch_pages():
     from playwright.sync_api import sync_playwright
     pages = {}
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(channel=os.environ.get('CARRIER_CHROME_CHANNEL') or None)
         try:
             for carrier, url in SOURCES.items():
                 page = browser.new_page(locale='en-US')
