@@ -157,11 +157,17 @@ def fetch_pages():
     from playwright.sync_api import sync_playwright
     pages = {}
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel=os.environ.get('CARRIER_CHROME_CHANNEL') or None)
+        # Use HTTP/1.1 for carrier servers that terminate runner HTTP/2 sessions.
+        # No proxy, challenge bypass, credential, or browser security changes.
+        browser = p.chromium.launch(channel=os.environ.get('CARRIER_CHROME_CHANNEL') or None,
+                                    args=['--disable-http2'])
         try:
             for carrier, url in SOURCES.items():
                 page = browser.new_page(locale='en-US')
+                downloads = []
+                page.on('download', downloads.append)
                 try:
+                    print(f'Checking {carrier}: {url}', flush=True)
                     response = page.goto(url, wait_until='domcontentloaded', timeout=60000)
                     if not response or response.status >= 400:
                         raise RuntimeError('Official source returned HTTP error')
@@ -170,8 +176,21 @@ def fetch_pages():
                     page.wait_for_function("() => Array.from(document.querySelectorAll('table')).some(t => /20[0-9]{2}/.test(t.innerText) && /%|per pound/i.test(t.innerText))", timeout=30000)
                     pages[carrier] = page.content()
                 except Exception as error:
+                    if 'Download is starting' in str(error):
+                        try:
+                            download = downloads[-1] if downloads else page.wait_for_event('download', timeout=5000)
+                            downloaded_html = Path(download.path()).read_text(encoding='utf-8')
+                            parse_published(carrier, downloaded_html)
+                            pages[carrier] = downloaded_html
+                            continue
+                        except Exception as download_error:
+                            error = download_error
                     detail = str(error).split('Call log:')[0].strip()[:400]
-                    pages[carrier] = RuntimeError(type(error).__name__ + ': ' + detail)
+                    try:
+                        body = ' '.join(page.locator('body').inner_text(timeout=2000).split())[:350]
+                    except Exception:
+                        body = ''
+                    pages[carrier] = RuntimeError(type(error).__name__ + ': ' + detail + (' | Page: ' + body if body else ''))
                 finally:
                     page.close()
         finally:
