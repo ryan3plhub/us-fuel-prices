@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-23T03:47:23.546965+00:00",
+  "generated_at": "2026-11-24T00:02:19.416359+00:00",
   "timezone": "America/New_York",
   "test_data": false,
   "carriers": {
     "ups": {
       "service": "UPS Domestic Ground",
       "source_url": "https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges",
-      "last_attempt_at": "2026-11-23T03:47:23.546965+00:00",
+      "last_attempt_at": "2026-11-24T00:02:19.416359+00:00",
       "records": [
         {
           "effective_from": "2026-11-16",
@@ -17,18 +17,13 @@
         }
       ],
       "verified_at": "2026-11-18T14:02:52+00:00",
-      "status": "reviewed_fallback",
-      "error": "ValueError: No recognizable published-rate table; refusing to guess",
-      "verification_method": "browser_review",
-      "warnings": [
-        "Automatic source check unavailable; using dated browser-reviewed record."
-      ],
-      "note": "Official table checked in browser; automatic source check unavailable. Expires at the published period end."
+      "status": "check_failed",
+      "error": "ValueError: No recognizable published-rate table; refusing to guess"
     },
     "fedex": {
       "service": "FedEx Ground / Home Delivery",
       "source_url": "https://www.fedex.com/en-us/shipping/fuel-surcharge.html",
-      "last_attempt_at": "2026-11-23T03:47:23.546965+00:00",
+      "last_attempt_at": "2026-11-24T00:02:19.416359+00:00",
       "records": [
         {
           "effective_from": "2026-11-16",
@@ -38,18 +33,13 @@
         }
       ],
       "verified_at": "2026-11-18T14:02:52+00:00",
-      "status": "reviewed_fallback",
-      "error": "TimeoutError: Locator.wait_for: Timeout 30000ms exceeded. | Page: We're sorry, we can't process your request right now. It appears you don't have permission to view this webpage. Incident Number: 18.88d7c617.1795405656.3b0ed34b For assistance with yo",
-      "verification_method": "browser_review",
-      "warnings": [
-        "Automatic source check unavailable; using dated browser-reviewed record."
-      ],
-      "note": "Official table checked in browser; automatic source check unavailable. Expires at the published period end."
+      "status": "check_failed",
+      "error": "TimeoutError: Locator.wait_for: Timeout 30000ms exceeded. | Page: We're sorry, we can't process your request right now. It appears you don't have permission to view this webpage. Incident Number: 18.b337cb17.1795478549.29ea50b For assistance with you"
     },
     "ontrac": {
       "service": "OnTrac national diesel-based schedule",
       "source_url": "https://www.ontrac.com/surchargesandrates/",
-      "last_attempt_at": "2026-11-23T03:47:23.546965+00:00",
+      "last_attempt_at": "2026-11-24T00:02:19.416359+00:00",
       "records": [
         {
           "effective_from": "2026-08-17",
@@ -136,17 +126,17 @@
           "unit": "percent"
         }
       ],
-      "verified_at": "2026-11-23T03:47:23.546965+00:00",
-      "source_sha256": "d476194ce8be4445df9f357729b052b755a9a5d6992dce3c003b0203f2d68389",
+      "verified_at": "2026-11-24T00:02:19.416359+00:00",
+      "source_sha256": "fe4d0678be681a056748a4356bd5d436df2f907cc08e24e8922cd9cdb32f2357",
       "warnings": [
         "Conflicting published period or amount starting 2026-11-23; excluded"
       ],
-      "status": "verified"
+      "status": "unavailable"
     },
     "dhl": {
       "service": "DHL eCommerce domestic",
       "source_url": "https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html",
-      "last_attempt_at": "2026-11-23T03:47:23.546965+00:00",
+      "last_attempt_at": "2026-11-24T00:02:19.416359+00:00",
       "records": [
         {
           "effective_from": "2026-11-01",
