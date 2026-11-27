@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-27T05:08:42.091454+00:00",
+  "generated_at": "2026-11-27T21:27:23.670553+00:00",
   "timezone": "America/New_York",
   "test_data": false,
   "carriers": {
     "ups": {
       "service": "UPS Domestic Ground",
       "source_url": "https://www.ups.com/us/en/support/shipping-support/shipping-costs-rates/fuel-surcharges",
-      "last_attempt_at": "2026-11-27T05:08:42.091454+00:00",
+      "last_attempt_at": "2026-11-27T21:27:23.670553+00:00",
       "records": [
         {
           "effective_from": "2026-11-16",
@@ -23,7 +23,7 @@
     "fedex": {
       "service": "FedEx Ground / Home Delivery",
       "source_url": "https://www.fedex.com/en-us/shipping/fuel-surcharge.html",
-      "last_attempt_at": "2026-11-27T05:08:42.091454+00:00",
+      "last_attempt_at": "2026-11-27T21:27:23.670553+00:00",
       "records": [
         {
           "effective_from": "2026-11-16",
@@ -34,12 +34,12 @@
       ],
       "verified_at": "2026-11-18T14:02:52+00:00",
       "status": "check_failed",
-      "error": "TimeoutError: Locator.wait_for: Timeout 30000ms exceeded. | Page: We're sorry, we can't process your request right now. It appears you don't have permission to view this webpage. Incident Number: 18.6e6c3817.1795756132.fbad21ae For assistance with yo"
+      "error": "TimeoutError: Locator.wait_for: Timeout 30000ms exceeded. | Page: We're sorry, we can't process your request right now. It appears you don't have permission to view this webpage. Incident Number: 18.46822c17.1795814859.45ce4d78 For assistance with yo"
     },
     "ontrac": {
       "service": "OnTrac national diesel-based schedule",
       "source_url": "https://www.ontrac.com/surchargesandrates/",
-      "last_attempt_at": "2026-11-27T05:08:42.091454+00:00",
+      "last_attempt_at": "2026-11-27T21:27:23.670553+00:00",
       "records": [
         {
           "effective_from": "2026-08-24",
@@ -132,15 +132,15 @@
           "unit": "percent"
         }
       ],
-      "verified_at": "2026-11-27T05:08:42.091454+00:00",
-      "source_sha256": "7f307239f85a902b1cc41280f620ce7863163b6a4c845a9059974442e0e30c39",
+      "verified_at": "2026-11-27T21:27:23.670553+00:00",
+      "source_sha256": "13204b30461f2733d37de8a28ada2fbd66e1b157ddf298192e8498077a17115e",
       "warnings": [],
       "status": "verified"
     },
     "dhl": {
       "service": "DHL eCommerce domestic",
       "source_url": "https://www.dhl.com/us-en/home/ecommerce/business-help-center/surcharge-policies.html",
-      "last_attempt_at": "2026-11-27T05:08:42.091454+00:00",
+      "last_attempt_at": "2026-11-27T21:27:23.670553+00:00",
       "records": [
         {
           "effective_from": "2026-11-01",
